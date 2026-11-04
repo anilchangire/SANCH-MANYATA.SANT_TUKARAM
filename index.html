@@ -746,12 +746,14 @@
 
   function updatePrintChecklist(index, val) {
     var pDiv = document.getElementById('print_chk' + index);
-    if (val === 'होय') {
-      pDiv.innerHTML = '<span style="font-size:15px; color:#0f766e;">[ ✓ ] होय</span>';
-    } else if (val === 'नाही') {
-      pDiv.innerHTML = '<span style="font-size:15px; color:#dc2626;">[ ✓ ] नाही</span>';
-    } else {
-      pDiv.innerHTML = '-';
+    if (pDiv) {
+      if (val === 'होय') {
+        pDiv.innerHTML = '<span style="font-size:15px; color:#0f766e;">[ ✓ ] होय</span>';
+      } else if (val === 'नाही') {
+        pDiv.innerHTML = '<span style="font-size:15px; color:#dc2626;">[ ✓ ] नाही</span>';
+      } else {
+        pDiv.innerHTML = '-';
+      }
     }
   }
 
@@ -986,12 +988,14 @@
     document.getElementById('totalBeo').innerText = totalBeo;
     
     var totalDiffCell = document.getElementById('totalDiff');
-    totalDiffCell.innerText = totalDiff;
-    totalDiffCell.className = "diff-cell";
-    if (totalDiff < 0) {
-      totalDiffCell.classList.add("diff-negative");
-    } else if (totalDiff > 0) {
-      totalDiffCell.classList.add("diff-positive");
+    if (totalDiffCell) {
+      totalDiffCell.innerText = totalDiff;
+      totalDiffCell.className = "diff-cell";
+      if (totalDiff < 0) {
+        totalDiffCell.classList.add("diff-negative");
+      } else if (totalDiff > 0) {
+        totalDiffCell.classList.add("diff-positive");
+      }
     }
   }
 
@@ -1145,17 +1149,21 @@
       updatePrintChecklist(k, '');
     }
   }
+
   window.onload = function() {
     activeClasses = [1, 2, 3, 4];
     renderDynamicTable();
+
     var dateField = document.getElementById('visitDate');
     if (!dateField.value) {
       dateField.value = new Date().toISOString().split('T')[0];
     }
+
     var select = document.getElementById('schoolName');
     select.selectedIndex = 1;
     handleSchoolChange();
   };
 </script>
+
 </body>
 </html>
