@@ -1145,21 +1145,17 @@
       updatePrintChecklist(k, '');
     }
   }
-
   window.onload = function() {
     activeClasses = [1, 2, 3, 4];
     renderDynamicTable();
-
     var dateField = document.getElementById('visitDate');
     if (!dateField.value) {
       dateField.value = new Date().toISOString().split('T')[0];
     }
-
     var select = document.getElementById('schoolName');
     select.selectedIndex = 1;
     handleSchoolChange();
   };
 </script>
-
 </body>
 </html>
