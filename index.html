@@ -230,12 +230,6 @@
       box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
     }
 
-    .diff-cell {
-      font-weight: 700;
-      font-size: 13.5px;
-      background-color: #f8fafc;
-    }
-
     .diff-negative {
       color: var(--danger);
       background-color: #fef2f2;
@@ -867,6 +861,7 @@
           aadhar: document.getElementById('aadhar_' + id).value,
           readmitted: document.getElementById('readmitted_' + id) ? document.getElementById('readmitted_' + id).value : '',
           pres: document.getElementById('pres_' + id).value,
+          diff: document.getElementById('diff_' + id) ? document.getElementById('diff_' + id).value : '',
           removed: document.getElementById('removed_' + id) ? document.getElementById('removed_' + id).value : '',
           beo: document.getElementById('beo_' + id) ? document.getElementById('beo_' + id).value : ''
         };
@@ -887,7 +882,7 @@
         '<td><input type="number" min="0" class="num-input aadhar-in" id="aadhar_' + cId + '" oninput="calculateTotals()" onblur="fillZeroIfEmpty(this)"></td>' +
         '<td><input type="number" min="0" class="num-input readmitted-in" id="readmitted_' + cId + '" oninput="calculateTotals()" onblur="fillZeroIfEmpty(this)"></td>' +
         '<td><input type="number" min="0" class="num-input pres-in" id="pres_' + cId + '" oninput="calculateTotals()" onblur="fillZeroIfEmpty(this)"></td>' +
-        '<td class="diff-cell" id="diff_' + cId + '">0</td>' +
+        '<td><input type="number" class="num-input diff-in" id="diff_' + cId + '" oninput="calculateTotals()" onblur="fillZeroIfEmpty(this)"></td>' +
         '<td><input type="number" min="0" class="num-input removed-in" id="removed_' + cId + '" oninput="calculateTotals()" onblur="fillZeroIfEmpty(this)"></td>' +
         '<td><input type="number" min="0" class="num-input beo-in" id="beo_' + cId + '" oninput="calculateTotals()" onblur="fillZeroIfEmpty(this)"></td>' +
         '<td class="action-col"><button type="button" class="btn-remove-row" onclick="removeClassRow(' + cId + ')" title="हा वर्ग काढा">❌</button></td>' +
@@ -899,14 +894,21 @@
     for (var m = 0; m < activeClasses.length; m++) {
       var curId = activeClasses[m];
       if (existingValues[curId]) {
-        document.getElementById('reg_' + curId).value = existingValues[curId].reg || '';
-        document.getElementById('portal_' + curId).value = existingValues[curId].portal || '';
-        document.getElementById('aadhar_' + curId).value = existingValues[curId].aadhar || '';
-        if(document.getElementById('readmitted_' + curId)) document.getElementById('readmitted_' + curId).value = existingValues[curId].readmitted || '';
-        document.getElementById('pres_' + curId).value = existingValues[curId].pres || '';
-        if(document.getElementById('removed_' + curId)) document.getElementById('removed_' + curId).value = existingValues[curId].removed || '';
-        if(document.getElementById('beo_' + curId)) document.getElementById('beo_' + curId).value = existingValues[curId].beo || '';
-        calculateRow(curId);
+        document.getElementById('reg_' + curId).value = existingValues[curId].reg || '0';
+        document.getElementById('portal_' + curId).value = existingValues[curId].portal || '0';
+        document.getElementById('aadhar_' + curId).value = existingValues[curId].aadhar || '0';
+        if(document.getElementById('readmitted_' + curId)) document.getElementById('readmitted_' + curId).value = existingValues[curId].readmitted || '0';
+        document.getElementById('pres_' + curId).value = existingValues[curId].pres || '0';
+        
+        var savedDiff = existingValues[curId].diff;
+        if(savedDiff !== undefined && savedDiff !== '') {
+          document.getElementById('diff_' + curId).value = savedDiff;
+        } else {
+          calculateRow(curId);
+        }
+
+        if(document.getElementById('removed_' + curId)) document.getElementById('removed_' + curId).value = existingValues[curId].removed || '0';
+        if(document.getElementById('beo_' + curId)) document.getElementById('beo_' + curId).value = existingValues[curId].beo || '0';
       }
     }
 
@@ -924,7 +926,7 @@
     var hasEmpty = false;
     for (var i = 0; i < activeClasses.length; i++) {
       var id = activeClasses[i];
-      var fields = ['reg_' + id, 'portal_' + id, 'aadhar_' + id, 'readmitted_' + id, 'pres_' + id, 'removed_' + id, 'beo_' + id];
+      var fields = ['reg_' + id, 'portal_' + id, 'aadhar_' + id, 'readmitted_' + id, 'pres_' + id, 'diff_' + id, 'removed_' + id, 'beo_' + id];
       for (var f = 0; f < fields.length; f++) {
         var elem = document.getElementById(fields[f]);
         if (elem && elem.value.trim() === '') {
@@ -943,28 +945,22 @@
   function calculateRow(id) {
     var regElem = document.getElementById('reg_' + id);
     var portalElem = document.getElementById('portal_' + id);
-    if (!regElem || !portalElem) return;
+    var diffElem = document.getElementById('diff_' + id);
+    if (!regElem || !portalElem || !diffElem) return;
 
     var regVal = parseInt(regElem.value) || 0;
     var portalVal = parseInt(portalElem.value) || 0;
-    var diff = regVal - portalVal;
-
-    var diffCell = document.getElementById('diff_' + id);
-    if (diffCell) {
-      diffCell.innerText = diff;
-      diffCell.className = "diff-cell";
-      if (diff < 0) {
-        diffCell.classList.add("diff-negative");
-      } else if (diff > 0) {
-        diffCell.classList.add("diff-positive");
-      }
+    
+    // जर युजरने स्वतः तफावत भरली नसेल तर ऑटोमॅटिक भरली जाईल
+    if (diffElem.value === '' || diffElem.value === '0') {
+      diffElem.value = regVal - portalVal;
     }
 
     calculateTotals();
   }
 
   function calculateTotals() {
-    var totalReg = 0, totalPortal = 0, totalAadhar = 0, totalReadmitted = 0, totalPres = 0, totalRemoved = 0, totalBeo = 0;
+    var totalReg = 0, totalPortal = 0, totalAadhar = 0, totalReadmitted = 0, totalPres = 0, totalDiff = 0, totalRemoved = 0, totalBeo = 0;
 
     for (var i = 0; i < activeClasses.length; i++) {
       var id = activeClasses[i];
@@ -973,6 +969,7 @@
       var a = document.getElementById('aadhar_' + id);
       var rm = document.getElementById('readmitted_' + id);
       var pr = document.getElementById('pres_' + id);
+      var d = document.getElementById('diff_' + id);
       var rem = document.getElementById('removed_' + id);
       var b = document.getElementById('beo_' + id);
 
@@ -981,30 +978,19 @@
       if (a) totalAadhar += parseInt(a.value) || 0;
       if (rm) totalReadmitted += parseInt(rm.value) || 0;
       if (pr) totalPres += parseInt(pr.value) || 0;
+      if (d) totalDiff += parseInt(d.value) || 0;
       if (rem) totalRemoved += parseInt(rem.value) || 0;
       if (b) totalBeo += parseInt(b.value) || 0;
     }
-
-    var totalDiff = totalReg - totalPortal;
 
     document.getElementById('totalReg').innerText = totalReg;
     document.getElementById('totalPortal').innerText = totalPortal;
     document.getElementById('totalAadhar').innerText = totalAadhar;
     document.getElementById('totalReadmitted').innerText = totalReadmitted;
     document.getElementById('totalPresent').innerText = totalPres;
+    document.getElementById('totalDiff').innerText = totalDiff;
     document.getElementById('totalRemoved').innerText = totalRemoved;
     document.getElementById('totalBeo').innerText = totalBeo;
-    
-    var totalDiffCell = document.getElementById('totalDiff');
-    if (totalDiffCell) {
-      totalDiffCell.innerText = totalDiff;
-      totalDiffCell.className = "diff-cell";
-      if (totalDiff < 0) {
-        totalDiffCell.classList.add("diff-negative");
-      } else if (totalDiff > 0) {
-        totalDiffCell.classList.add("diff-positive");
-      }
-    }
   }
 
   function internalSave() {
@@ -1051,6 +1037,7 @@
         aadhar: document.getElementById('aadhar_' + id).value,
         readmitted: document.getElementById('readmitted_' + id).value,
         pres: document.getElementById('pres_' + id).value,
+        diff: document.getElementById('diff_' + id).value,
         removed: document.getElementById('removed_' + id).value,
         beo: document.getElementById('beo_' + id).value
       });
@@ -1128,12 +1115,13 @@
             document.getElementById('aadhar_' + item.id).value = (item.aadhar !== undefined && item.aadhar !== '') ? item.aadhar : '0';
             if(document.getElementById('readmitted_' + item.id)) document.getElementById('readmitted_' + item.id).value = (item.readmitted !== undefined && item.readmitted !== '') ? item.readmitted : '0';
             document.getElementById('pres_' + item.id).value = (item.pres !== undefined && item.pres !== '') ? item.pres : '0';
+            if(document.getElementById('diff_' + item.id)) document.getElementById('diff_' + item.id).value = (item.diff !== undefined && item.diff !== '') ? item.diff : '0';
             if(document.getElementById('removed_' + item.id)) document.getElementById('removed_' + item.id).value = (item.removed !== undefined && item.removed !== '') ? item.removed : '0';
             if(document.getElementById('beo_' + item.id)) document.getElementById('beo_' + item.id).value = (item.beo !== undefined && item.beo !== '') ? item.beo : '0';
-            calculateRow(item.id);
           }
         }
       }
+      calculateTotals();
     } catch (e) {
       console.error(e);
     }
@@ -1148,9 +1136,9 @@
         document.getElementById('aadhar_' + id).value = '0';
         if(document.getElementById('readmitted_' + id)) document.getElementById('readmitted_' + id).value = '0';
         document.getElementById('pres_' + id).value = '0';
+        if(document.getElementById('diff_' + id)) document.getElementById('diff_' + id).value = '0';
         if(document.getElementById('removed_' + id)) document.getElementById('removed_' + id).value = '0';
         if(document.getElementById('beo_' + id)) document.getElementById('beo_' + id).value = '0';
-        calculateRow(id);
       }
     }
     document.getElementById('remarks').value = '';
@@ -1159,6 +1147,7 @@
     for (var k = 1; k <= 7; k++) {
       updatePrintChecklist(k, '');
     }
+    calculateTotals();
   }
 
   window.onload = function() {
