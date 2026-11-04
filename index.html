@@ -1,1 +1,328 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>केंद्रप्रमुख शाळा भेट व संचमान्यता पट पडताळणी प्रपत्र आणि हमीपत्र</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --primary-subtle: #eff6ff;
+      --secondary: #0f766e;
+      --accent: #f59e0b;
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --danger: #dc2626;
+      --success: #16a34a;
+    }
 
+    * {
+      box-sizing: border-box;
+      font-family: 'Mukta', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: var(--bg-color);
+      margin: 0;
+      padding: 12px;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .form-container {
+      max-width: 950px;
+      margin: 10px auto;
+      background: var(--card-bg);
+      padding: 24px 28px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Header Section */
+    .header-section {
+      text-align: center;
+      padding-bottom: 16px;
+      border-bottom: 2px dashed #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      margin-bottom: 8px;
+    }
+
+    .header-section h2 {
+      margin: 4px 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .header-section h3 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Section Styling */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 20px;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, var(--primary-subtle) 0%, rgba(239, 246, 255, 0.2) 100%);
+      color: var(--primary);
+      padding: 7px 12px;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+
+    .form-group input, 
+    .form-group textarea, 
+    .form-group select {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 6px;
+      outline: none;
+      background-color: #fff;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .form-group select {
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    .form-group input:focus, 
+    .form-group textarea:focus, 
+    .form-group select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 8px;
+    }
+
+    /* Dynamic Class Adder Bar */
+    .class-adder-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .class-adder-bar label {
+      font-weight: 700;
+      font-size: 14px;
+      color: #1e3a8a;
+    }
+
+    .class-adder-bar select {
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1.5px solid #cbd5e1;
+      outline: none;
+      font-weight: 600;
+      min-width: 150px;
+    }
+
+    .btn-add-class {
+      padding: 7px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.2s;
+    }
+
+    .btn-add-class:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* Table Styling */
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+
+    th, td {
+      padding: 6px 4px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f8fafc;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .num-input {
+      width: 100%;
+      min-width: 50px;
+      padding: 5px 2px;
+      font-size: 13.5px;
+      text-align: center;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .num-input:focus {
+      background-color: #fffbeb;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    .diff-cell {
+      font-weight: 700;
+      font-size: 13.5px;
+      background-color: #f8fafc;
+    }
+
+    .diff-negative {
+      color: var(--danger);
+      background-color: #fef2f2;
+    }
+
+    .diff-positive {
+      color: var(--success);
+      background-color: #f0fdf4;
+    }
+
+    .total-row {
+      font-weight: 700;
+      background-color: #e2e8f0;
+      font-size: 14px;
+    }
+
+    .btn-remove-row {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      border-radius: 4px;
+      padding: 3px 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .btn-remove-row:hover {
+      background: #fca5a5;
+      color: #991b1b;
+    }
+
+    .checklist-table td {
+      padding: 10px 8px;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .radio-label {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+
+    .radio-label input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+    }
+
+    .print-val-display {
+      display: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .sign-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding: 0 25px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1e293b;
+    }
+
+    /* भाग २: हमीपत्र विभाग */
+    .undertaking-sheet {
+      margin-top: 40px;
+      padding-top: 25px;
+      border-top: 2px dashed #94a3b8;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .doc-header-box {
+      border: 1.5px solid #000;
+      padding: 7px 10px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .doc-header-box h
